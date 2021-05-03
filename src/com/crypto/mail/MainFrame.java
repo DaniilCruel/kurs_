@@ -295,7 +295,6 @@ public class MainFrame extends JFrame{
                             BodyPart bodyPart = multipart.getBodyPart(0);
                             String encryptedContent = bodyPart.getContent().toString();
 
-                            //byte encryptedByteContent[] = toByteArray(encryptedContent);
                             byte encryptedByteContent[] = Base64.getDecoder().decode(encryptedContent.getBytes());
 
                             //----------------------------------
