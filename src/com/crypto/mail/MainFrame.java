@@ -10,6 +10,7 @@ import javax.mail.internet.MimeMultipart;
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+import javax.xml.crypto.Data;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.DataInputStream;
@@ -23,6 +24,7 @@ import java.security.spec.InvalidKeySpecException;
 import java.security.spec.PKCS8EncodedKeySpec;
 import java.security.spec.X509EncodedKeySpec;
 import java.util.Base64;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Properties;
 
@@ -269,25 +271,42 @@ public class MainFrame extends JFrame{
 
     private void reciveMSG(String algorithm, byte[]  mySecretKey){
         new Thread(new Runnable() {
+            Date date= null;
             public void run() {
                 try {
+                    Properties properties = new Properties();
+                    properties.put("mail.store.protocol", "imaps");
+                    Session emailSession = Session.getInstance(properties);
+
+                    Store store = emailSession.getStore("imaps");
+                    store.connect("imap.gmail.com", username, password);
+
+
                     while (!Thread.interrupted()) {
-                        Properties properties = new Properties();
-                        properties.put("mail.store.protocol", "imaps");
-                        Session emailSession = Session.getInstance(properties);
-
-                        Store store = emailSession.getStore("imaps");
-                        store.connect("imap.gmail.com", username, password);
-
                         Folder emailFolder = store.getFolder("INBOX");
                         emailFolder.open(Folder.READ_ONLY);
-
                         Message[] messages = emailFolder.getMessages();
+
+                        Message mesd = messages[messages.length-1];
+                        Date date1 = mesd.getReceivedDate();
+                        System.out.println( " -------");
+                        System.out.println( date);
+                        System.out.println( date1);
+                        System.out.println( " -------");
+
+                        if ( date != null && date.compareTo(date1) == 0) {
+                            System.out.println("+==+");
+                            continue;
+                        }
+                        date = mesd.getReceivedDate();
+
                         for (int i = 0; i < messages.length; i++) {
 
                             Message message = messages[i];
 
+
                             System.out.println("Index " + (i + 1));
+                            System.out.println(message.getReceivedDate());
                             System.out.println("From: " + message.getFrom()[0]);
                             System.out.println("Subject: " + message.getSubject());
 
@@ -313,12 +332,14 @@ public class MainFrame extends JFrame{
 
                             String descrypmess = ("Content:\n" + decryptContent(algorithm, key, encryptedByteContent));
                             procMSG(descrypmess);
+
+
                         }
 
                         emailFolder.close(false);
-                        store.close();
                     }
 
+                    store.close();
 
 
                     } catch (IOException | NoSuchAlgorithmException | NoSuchPaddingException | IllegalBlockSizeException | BadPaddingException | MessagingException noSuchProviderException) {
