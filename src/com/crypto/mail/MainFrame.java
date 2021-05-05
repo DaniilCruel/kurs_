@@ -272,6 +272,7 @@ public class MainFrame extends JFrame{
     private void reciveMSG(String algorithm, byte[]  mySecretKey){
         new Thread(new Runnable() {
             Date date= null;
+            int endi = 0;
             public void run() {
                 try {
                     Properties properties = new Properties();
@@ -287,6 +288,8 @@ public class MainFrame extends JFrame{
                         emailFolder.open(Folder.READ_ONLY);
                         Message[] messages = emailFolder.getMessages();
 
+
+
                         Message mesd = messages[messages.length-1];
                         Date date1 = mesd.getReceivedDate();
                         System.out.println( " -------");
@@ -296,11 +299,12 @@ public class MainFrame extends JFrame{
 
                         if ( date != null && date.compareTo(date1) == 0) {
                             System.out.println("+==+");
+                            endi = messages.length;
                             continue;
                         }
                         date = mesd.getReceivedDate();
 
-                        for (int i = 0; i < messages.length; i++) {
+                        for (int i = endi; i < messages.length; i++) {
 
                             Message message = messages[i];
 
@@ -330,7 +334,7 @@ public class MainFrame extends JFrame{
                             //----------------------------------
 
 
-                            String descrypmess = ("Content:\n" + decryptContent(algorithm, key, encryptedByteContent));
+                            String descrypmess = ("  " + decryptContent(algorithm, key, encryptedByteContent));
                             procMSG(descrypmess);
 
 
