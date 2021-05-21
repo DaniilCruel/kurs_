@@ -10,6 +10,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -19,11 +21,10 @@ public class WelcomeScreen extends JFrame{
 
     private JTextField from_field;
     private JTextField to_field;
-
     private Box BoxResult;
 
     JButton calculateButton = new JButton("Войти");
-    JButton resetButton = new JButton("Очистить поля");
+    JCheckBox javaScript = new JCheckBox("Сохранить Логин и Пароль");
 
 
     public WelcomeScreen() { // Публичный конструктор, куда передаем весь приватный метод
@@ -35,14 +36,16 @@ public class WelcomeScreen extends JFrame{
             @Override
            public void actionPerformed(ActionEvent actionEvent) {
                 try {
-                    System.out.println("try");
+
                     // Считать значения границ отрезка, шага из полей ввода
                     String user =(from_field.getText());
                     String pass =(to_field.getText());
-                    System.out.println("try yes");
+                    MainApp.Me.username = user;
+                    MainApp.Me.password = pass;
+
 
                     if((user != null && pass != null )) {
-                        System.out.println("user != null && pass != null");
+
                         Properties properties = new Properties();
                         properties.put("mail.store.protocol", "imaps");
                         Session emailSession = Session.getInstance(properties);
@@ -50,10 +53,7 @@ public class WelcomeScreen extends JFrame{
                         MainApp.store = emailSession.getStore("imaps");
                         MainApp.store.connect("imap.gmail.com", user, pass);
 
-                        System.out.println("conn");
                         setVisible(false);
-                        System.out.println( MainApp.store );
-                        System.out.println(" setVisible(false);");
                         dispose();
                         MainApp.It=1;
 
@@ -80,16 +80,12 @@ public class WelcomeScreen extends JFrame{
             }
         });
 
-        // Задать действие на нажатие "Очистить поля" и привязать к кнопке
-         resetButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent ev) {
-                // Установить в полях ввода значения по умолчанию
-               from_field.setText("0.0");
-                to_field.setText("1.0");
+        javaScript.addItemListener(new ItemListener() {
+            public void itemStateChanged(ItemEvent e) {
 
             }
-        }
-        );
+        });
+
 
 
     }
@@ -146,7 +142,7 @@ public class WelcomeScreen extends JFrame{
         buttonBox.add(Box.createHorizontalGlue());
         buttonBox.add(calculateButton);
         buttonBox.add(Box.createHorizontalStrut(20));
-        buttonBox.add(resetButton);
+        buttonBox.add( javaScript);
         buttonBox.add(Box.createHorizontalStrut(20));
         buttonBox.add(Box.createHorizontalGlue());
         buttonBox.setPreferredSize(new

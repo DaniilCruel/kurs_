@@ -2,11 +2,14 @@ package com.crypto.mail;
 
 import javax.mail.Store;
 import javax.swing.*;
+import java.util.concurrent.TimeUnit;
 
 public class MainApp {
 
 
     static Store store;
+    protected static User Me = new User();
+
     static int It = 0;
     public static void main(String[] args)
     {
@@ -18,7 +21,8 @@ public class MainApp {
         System.out.println( store );
 
         while(  It==0  ) {
-            System.out.println("0");
+
+            System.out.println("");
         }
 
         System.out.println("store != null");

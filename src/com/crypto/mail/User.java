@@ -8,7 +8,11 @@ public class User {
     public static String password;
 
     public User(){
-        String username = "";
-        String password = "";
+        String username = " ";
+        String password = " ";
+    }
+    public User( String user, String pass){
+        String username = user;
+        String password = pass;
     }
 }
