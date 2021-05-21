@@ -29,8 +29,6 @@ public class MainFrame extends JFrame{
     private static final int FRAME_MINIMUM_WIDTH = 900;
     private static final int FRAME_MINIMUM_HEIGHT = 550;
 
-
-
     //    public static String username = "AliseTest228@gmail.com";
     //    public static String password = "watch?v=j8wQbxzrFvk";
     public static String username = "bobtestbgr@gmail.com";
@@ -239,7 +237,7 @@ public class MainFrame extends JFrame{
                         return new javax.mail.PasswordAuthentication(username, password);
                     }
                 });
-        String recipient = "AliseTest228@gmail.com";
+        String recipient = "bobtestbgr@gmail.com";
         MimeMessage message = new MimeMessage(session);
         message.setFrom(new InternetAddress(username));
         message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(recipient));
@@ -297,16 +295,8 @@ public class MainFrame extends JFrame{
             int endi = 0;
             public void run() {
                 try {
-                    Properties properties = new Properties();
-                    properties.put("mail.store.protocol", "imaps");
-                    Session emailSession = Session.getInstance(properties);
-
-                    Store store = emailSession.getStore("imaps");
-                    store.connect("imap.gmail.com", username, password);
-
-
-                    while (!Thread.interrupted()) {
-                        Folder emailFolder = store.getFolder("INBOX");
+                        while (!Thread.interrupted()) {
+                        Folder emailFolder = MainApp.store.getFolder("INBOX");
                         emailFolder.open(Folder.READ_ONLY);
                         Message[] messages = emailFolder.getMessages();
 
@@ -365,7 +355,7 @@ public class MainFrame extends JFrame{
                         emailFolder.close(false);
                     }
 
-                    store.close();
+                    MainApp.store.close();
 
 
                     } catch (IOException | NoSuchAlgorithmException | NoSuchPaddingException | IllegalBlockSizeException | BadPaddingException | MessagingException noSuchProviderException) {
@@ -408,9 +398,6 @@ public class MainFrame extends JFrame{
         String item = nick+"@"+ip+":"+port;
         listModel.addElement(item);
     }
-
-
-
 
 
 }
