@@ -21,7 +21,6 @@ public class WelcomeScreen extends JFrame{
 
     private JTextField from_field;
     private JTextField to_field;
-    private Box BoxResult;
 
     JButton calculateButton = new JButton("Войти");
     JCheckBox javaScript = new JCheckBox("Сохранить Логин и Пароль");
@@ -150,9 +149,6 @@ public class WelcomeScreen extends JFrame{
                 Double(buttonBox.getMinimumSize().getHeight()).intValue()*2));
         getContentPane().add(buttonBox, BorderLayout.SOUTH);
 
-        BoxResult=Box.createHorizontalBox();
-        BoxResult.add(new JPanel());
-        getContentPane().add(BoxResult, BorderLayout.CENTER);
     }
 
 
