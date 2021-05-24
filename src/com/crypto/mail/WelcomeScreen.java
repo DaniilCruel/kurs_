@@ -37,20 +37,19 @@ public class WelcomeScreen extends JFrame{
                 try {
 
                     // Считать значения границ отрезка, шага из полей ввода
-                    String user =(from_field.getText());
-                    String pass =(to_field.getText());
-                    MainApp.Me.username = user;
-                    MainApp.Me.password = pass;
+
+                    MainApp.Me.username = (from_field.getText());
+                    MainApp.Me.password = (to_field.getText());
 
 
-                    if((user != null && pass != null )) {
+                    if((MainApp.Me.username  != null && MainApp.Me.password != null )) {
 
                         Properties properties = new Properties();
                         properties.put("mail.store.protocol", "imaps");
                         Session emailSession = Session.getInstance(properties);
 
                         MainApp.store = emailSession.getStore("imaps");
-                        MainApp.store.connect("imap.gmail.com", user, pass);
+                        MainApp.store.connect("imap.gmail.com", MainApp.Me.username, MainApp.Me.password);
 
                         setVisible(false);
                         dispose();
